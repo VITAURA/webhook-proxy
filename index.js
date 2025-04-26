@@ -3,30 +3,31 @@ const cors = require('cors');
 const axios = require('axios');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
 app.use(cors());
 app.use(express.json());
 
-app.post('/send', async (req, res) => {
+const TARGET_URL = 'https://hooks.zapier.com/hooks/catch/21031514/2puheog/';
+
+app.post('/', async (req, res) => {
+  console.log('✅ Otrzymano dane:', req.body); // <<<<<< WAŻNE: logowanie danych
+
   try {
-    const { name, phone } = req.body;
+    const response = await axios.post(TARGET_URL, req.body);
+    console.log('✅ Wysłano do Zapiera:', response.data);
 
-    // TWÓJ WEBHOOK Z ZAPIERA:
-    const webhookURL = 'https://hooks.zapier.com/hooks/catch/21031514/2puheog/';
-
-    await axios.post(webhookURL, { name, phone });
     res.status(200).json({ success: true });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: 'Failed to send data to Zapier' });
+  } catch (error) {
+    console.error('❌ Błąd przy wysyłce do Zapiera:', error.message);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
+// dodatkowy GET, opcjonalny
 app.get('/', (req, res) => {
-  res.send('Proxy server is running.');
+  res.send('Webhook proxy działa ✅');
 });
 
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Serwer działa na porcie ${PORT}`);
 });
