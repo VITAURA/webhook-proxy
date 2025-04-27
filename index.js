@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 const TARGET_URL = 'https://hooks.zapier.com/hooks/catch/21031514/2puheog/';
-const RECAPTCHA_SECRET_KEY = '6LcihSYrAAAAAAQ4JtF-xZjw7nGbHO1-QXaQBxRa'; // Twój klucz prywatny reCAPTCHA
+const RECAPTCHA_SECRET_KEY = '6LcihSYrAAAAAK4UF0nvJEWn2Ig8FjyHHrUc99je'; // Twój poprawny secret key
 
 app.post('/', async (req, res) => {
   console.log('✅ Otrzymano dane:', req.body);
